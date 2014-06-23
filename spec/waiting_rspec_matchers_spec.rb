@@ -64,9 +64,10 @@ describe "expect(...).to become_...(*args)" do
   end
 
   it "fails when block isn't supplied" do
+    error_class = (RUBY_ENGINE == 'rbx') ? ArgumentError : TypeError
     expect do
       expect(1).to become_eq(1)
-    end.to raise_error(TypeError)
+    end.to raise_error(error_class)
   end
 
   it "waits up to default_wait_time for expectation to match" do
