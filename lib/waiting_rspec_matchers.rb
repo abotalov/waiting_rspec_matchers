@@ -21,23 +21,28 @@ module WaitingRspecMatchers
 
   BECOME_REGEX = /^become_(.+)/
 
-  def method_missing(method, *args, &expected_block)
-    if m = method.to_s.match(BECOME_REGEX)
-      matcher_class_name = "Become#{m[1].capitalize}Matcher"
-      if WaitingRspecMatchers.const_defined?(matcher_class_name)
-        k = WaitingRspecMatchers.const_get(matcher_class_name)
+  def method_missing(method_name, *args, &expected_block)
+    if m = method_name.to_s.match(BECOME_REGEX)
+      rspec_matcher_name = m[1]
+      matcher_class_name = "Become#{rspec_matcher_name.capitalize}Matcher"
+      if ::WaitingRspecMatchers.const_defined?(matcher_class_name)
+        k = ::WaitingRspecMatchers.const_get(matcher_class_name)
       else
-        k = define_matcher_class(matcher_class_name)
-        WaitingRspecMatchers.const_set(matcher_class_name, k)
+        k = define_matcher_class
+        ::WaitingRspecMatchers.const_set(matcher_class_name, k)
       end
 
-      k.new(m[1], *args, &expected_block)
+      k.new(rspec_matcher_name, *args, &expected_block)
     else
       super
     end
   end
 
-  def define_matcher_class(matcher_class_name)
+  def respond_to_missing?(method_name, *)
+    method_name.to_s =~ BECOME_REGEX || super
+  end
+
+  def define_matcher_class
     Class.new do
       include ::RSpec::Matchers
       include ::RSpec::Matchers::Composable
@@ -61,6 +66,11 @@ module WaitingRspecMatchers
 
       def delay(seconds)
         @delay = seconds
+        self
+      end
+
+      def method_missing(method, *args)
+        @chains << [method, args]
         self
       end
 
@@ -103,11 +113,6 @@ module WaitingRspecMatchers
 
       def supports_block_expectations?
         true
-      end
-
-      def method_missing(method, *args)
-        @chains << [method, args]
-        self
       end
     end
   end
