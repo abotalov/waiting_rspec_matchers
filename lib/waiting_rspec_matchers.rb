@@ -95,11 +95,11 @@ module WaitingRspecMatchers
         true
       end
 
-      define_method :matches? do |block|
+      def matches?(block)
         match_helper(:to, &block)
       end
 
-      define_method :does_not_match? do |block|
+      def does_not_match?(block)
         match_helper(:not_to, &block)
       end
 
