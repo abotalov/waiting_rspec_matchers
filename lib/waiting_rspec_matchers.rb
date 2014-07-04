@@ -24,6 +24,9 @@ module WaitingRspecMatchers
   def method_missing(method_name, *args, &expected_block)
     if m = method_name.to_s.match(BECOME_REGEX)
       rspec_matcher_name = m[1]
+      unless respond_to?(rspec_matcher_name)
+        raise ArgumentError, "Matcher #{rspec_matcher_name.inspect} doesn't exist"
+      end
       matcher_class_name = "Become#{rspec_matcher_name.capitalize}Matcher"
       if ::WaitingRspecMatchers.const_defined?(matcher_class_name)
         k = ::WaitingRspecMatchers.const_get(matcher_class_name)
@@ -32,7 +35,7 @@ module WaitingRspecMatchers
         ::WaitingRspecMatchers.const_set(matcher_class_name, k)
       end
 
-      k.new(rspec_matcher_name, *args, &expected_block)
+      k.new(rspec_matcher_name, self, *args, &expected_block)
     else
       super
     end
@@ -47,11 +50,11 @@ module WaitingRspecMatchers
       include ::RSpec::Matchers
       include ::RSpec::Matchers::Composable
 
-      def initialize(rspec_matcher_name, *args, &expected_block)
+      def initialize(rspec_matcher_name, where_included, *args, &expected_block)
         @rspec_matcher_name = rspec_matcher_name
+        @where_included = where_included
         @args = args
         @expected_block = expected_block
-
         @chains = []
       end
 
@@ -77,11 +80,11 @@ module WaitingRspecMatchers
       def match_helper(to_or_not_to, &block)
         start_time = Time.now
         begin
-          matcher = __send__(@rspec_matcher_name.to_sym, *@args, &@expected_block)
+          matcher = @where_included.__send__(@rspec_matcher_name.to_sym, *@args, &@expected_block)
           @chains.each do |chain|
             matcher = matcher.__send__(chain[0], *chain[1])
           end
-          if matcher.supports_block_expectations?
+          if matcher.respond_to?(:supports_block_expectations?) && matcher.supports_block_expectations?
             expect { block.call }.__send__(to_or_not_to, matcher)
           else
             expect(block.call).__send__(to_or_not_to, matcher)

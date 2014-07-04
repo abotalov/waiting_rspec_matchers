@@ -6,6 +6,26 @@ describe "expect(...).to become_...(*args)" do
     WaitingRspecMatchers.default_delay = 0.05
   end
 
+  context "with non-existent matcher" do
+    it "dfsdf" do
+      expect do
+        expect { 1 }.to become_something(1)
+      end.to raise_error(ArgumentError, 'Matcher "something" doesn\'t exist')
+    end
+  end
+
+  context "with custom matcher" do
+    it "passes if it passes for custom matcher" do
+      expect { 1 }.to become_custom_eq(1)
+    end
+
+    it "fails if it fails for custom matcher" do
+      expect do
+        expect { 1 }.to become_custom_eq(2)
+      end.to raise_error('something went wrong')
+    end
+  end
+
   context "with eq matcher" do
     it "passes if it passes for non-waiting matcher" do
       expect { 1 }.to become_eq(1)
