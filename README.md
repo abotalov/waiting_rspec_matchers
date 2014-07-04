@@ -8,26 +8,21 @@ This is where this gem aims to help.
 
 If `some_name` rspec matcher exists, WaitingRspecMatchers provides you `become_some_name` matcher that does the same as `some_name` matcher but also waits for that matcher to succeed.
 
-You can specify a wait time (amount of time that gem will retry supplied block of code) and delay (period between retries).
+## Setup
 
-You can either change default values (it will take effect for all matchers):
-
+To install, add this line to your Gemfile and run bundle install:
 ```ruby
-WaitingRspecMatchers.configure do |config|
-  config.default_wait_time = 2
-  config.default_delay = 0.05
+gem 'waiting_rspec_matchers'
+```
+
+Then you should include it in e.g. `spec_helper.rb`:
+```ruby
+RSpec.configure do |config|
+  config.include WaitingRspecMatchers
 end
 ```
 
-or set it on per-matcher basis:
-
-```ruby
-expect { some_code }.to become_eq(3).during(2).delay(0.05)
-expect { some_code }.to become_eq(3).during(2)
-expect { some_code }.to become_eq(3).delay(0.05)
-```
-
-Usage examples (inspiration):
+## Usage examples (inspiration)
 
 * reload page until some element/text appears:
 
@@ -61,12 +56,23 @@ expect { el[:class] }.to become_include('some_class')
 expect { proxy.har.entries.count { |e| e.request.url[/\/path/]} }.to become_eq(3)
 ```
 
-## Installation
+## Changing wait time
 
-Add this line to your application's Gemfile:
+You can specify a wait time (amount of time that gem will retry supplied block of code) and delay (period between retries).
 
-    gem 'waiting_rspec_matchers'
+You can either change default values (it will take effect for all matchers):
 
-And then execute:
+```ruby
+WaitingRspecMatchers.configure do |config|
+  config.default_wait_time = 2
+  config.default_delay = 0.05
+end
+```
 
-    $ bundle
+or set it on per-matcher basis:
+
+```ruby
+expect { some_code }.to become_eq(3).during(2).delay(0.05)
+expect { some_code }.to become_eq(3).during(2)
+expect { some_code }.to become_eq(3).delay(0.05)
+```
