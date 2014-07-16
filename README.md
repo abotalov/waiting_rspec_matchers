@@ -8,6 +8,8 @@ This is where this gem aims to help.
 
 If `some_name` rspec matcher exists, WaitingRspecMatchers provides you `become_some_name` matcher that does the same as `some_name` matcher but also waits for that matcher to succeed.
 
+The benefit of using this gem over solutions like [wait_until](https://gist.github.com/jnicklas/d8da686061f0a59ffdf7), [retryable](https://github.com/carlo/retryable), [tries](https://github.com/krautcomputing/tries) is that those solutions don't integrate with RSpec and thus don't provide useful enough error messages.
+
 ## Setup
 
 To install, add this line to your Gemfile and run bundle install:
@@ -31,7 +33,7 @@ end
 expect do
   visit 'path'
   page
-end.to become_have_css('#id')
+end.to become_have_css('#id', wait: 0) # `expect(page).to have_css('#id', wait: 0)` is internally invoked by this gem
 ```
 
 * check that page url is "some_string" or will become "some_string":
