@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name          = 'waiting_rspec_matchers'
   s.version       = WaitingRspecMatchers::VERSION
   s.authors       = ['Andrey Botalov']
-  s.summary       = %q{New become_* RSpec matchers that do the same as * matchers but also wait}
+  s.summary       = %q{become_* RSpec matchers that do the same as * matchers but also wait}
   s.homepage      = 'https://github.com/abotalov/waiting_rspec_matchers'
   s.license       = 'MIT'
 

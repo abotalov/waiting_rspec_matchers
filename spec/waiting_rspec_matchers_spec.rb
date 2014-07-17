@@ -7,7 +7,7 @@ describe "expect(...).to become_...(*args)" do
   end
 
   context "with non-existent matcher" do
-    it "dfsdf" do
+    it "fails for non-existent matcher" do
       expect do
         expect { 1 }.to become_something(1)
       end.to raise_error(ArgumentError, 'Matcher "something" doesn\'t exist')
