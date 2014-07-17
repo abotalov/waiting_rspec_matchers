@@ -16,7 +16,7 @@ describe "expect(...).to become_...(*args)" do
     it "fails if method doesn't return rspec matcher" do
       expect do
         expect { 1 }.to become_to_s
-      end.to raise_error(NoMethodError, /\Aundefined method `matches\?' for #<String/)
+      end.to raise_error(NoMethodError)
     end
   end
 
