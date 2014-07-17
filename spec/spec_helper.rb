@@ -1,7 +1,7 @@
 require 'pry'
 require 'waiting_rspec_matchers'
 
-class CustomMatcher
+class CustomEq
   def initialize(expected)
     @expected = expected
   end
@@ -17,7 +17,7 @@ end
 
 module CustomMatchers
   def custom_eq(expected)
-    CustomMatcher.new(expected)
+    CustomEq.new(expected)
   end
 end
 

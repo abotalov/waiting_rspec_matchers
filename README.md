@@ -13,11 +13,13 @@ The benefit of using this gem over solutions like [wait_until](https://gist.gith
 ## Setup
 
 To install, add this line to your Gemfile and run bundle install:
+
 ```ruby
 gem 'waiting_rspec_matchers'
 ```
 
 Then you should include it in e.g. `spec_helper.rb`:
+
 ```ruby
 RSpec.configure do |config|
   config.include WaitingRspecMatchers

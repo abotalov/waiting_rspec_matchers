@@ -32,11 +32,17 @@ module WaitingRspecMatchers
       @chains = []
     end
 
+    # @api public
+    # Specifies a number of seconds that WaitingRspecMatchers should wait for a matcher to succeed
+    # @param [Numeric]
     def during(max_wait_time_in_seconds)
       @max_wait_time = max_wait_time_in_seconds
       self
     end
 
+    # @api public
+    # Specifies period between tries that WaitingRspecMatchers should make when waiting for a matcher to succeed
+    # @param [Numeric]
     def delay(seconds)
       @delay = seconds
       self
@@ -103,7 +109,7 @@ module WaitingRspecMatchers
     if m = method_name.to_s.match(BECOME_REGEX)
       rspec_matcher_name = m[1]
       unless respond_to?(rspec_matcher_name)
-        raise ArgumentError, "Matcher #{rspec_matcher_name.inspect} doesn't exist"
+        raise ArgumentError, "Method `#{rspec_matcher_name}` doesn't exist. It was expected to exist and return instance of class that implements RSpec's matcher protocol."
       end
       Become.new(rspec_matcher_name, self, *args, &expected_block)
     else

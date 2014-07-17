@@ -10,7 +10,13 @@ describe "expect(...).to become_...(*args)" do
     it "fails for non-existent matcher" do
       expect do
         expect { 1 }.to become_something(1)
-      end.to raise_error(ArgumentError, 'Matcher "something" doesn\'t exist')
+      end.to raise_error(ArgumentError, "Method `something` doesn't exist. It was expected to exist and return instance of class that implements RSpec's matcher protocol.")
+    end
+
+    it "fails if method doesn't return rspec matcher" do
+      expect do
+        expect { 1 }.to become_to_s
+      end.to raise_error(NoMethodError, /\Aundefined method `matches\?' for #<String/)
     end
   end
 
