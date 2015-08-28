@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/abotalov/waiting_rspec_matchers.svg?branch=master)](https://travis-ci.org/abotalov/waiting_rspec_matchers)
 
-When writing end-to-end tests there is often a necessity to wait for something to happen. Libraries like Capybara provide some functionality to ease it but this functionality doesn't cover all needed cases. Sometimes you need to wait for a more specific condition.
+When writing end-to-end tests there is often a necessity to wait for something to happen. Libraries like Capybara, Watir-Webdriver provide some functionality to ease it but this functionality doesn't cover all needed cases. Sometimes you need to wait for a more specific condition.
 
 This is where this gem aims to help.
 
