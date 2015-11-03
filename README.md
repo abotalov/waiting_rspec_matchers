@@ -1,5 +1,6 @@
 # Waiting RSpec Matchers
 
+[![Gem Version](https://badge.fury.io/rb/waiting_rspec_matchers.svg)](https://rubygems.org/gems/waiting_rspec_matchers)
 [![Build Status](https://travis-ci.org/abotalov/waiting_rspec_matchers.svg?branch=master)](https://travis-ci.org/abotalov/waiting_rspec_matchers)
 
 When writing end-to-end tests there is often a necessity to wait for something to happen. Libraries like Capybara, Watir-Webdriver provide some functionality to ease it but this functionality doesn't cover all needed cases. Sometimes you need to wait for a more specific condition.
